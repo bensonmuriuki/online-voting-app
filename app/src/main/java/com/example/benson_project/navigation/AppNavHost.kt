@@ -2,17 +2,15 @@ package com.example.benson_project.navigation
 
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.benson_project.nominee.AddNomineeScreen
 import com.example.benson_project.nominee.UpdateNomineeScreen
-import com.example.benson_project.nominee.ViewNomineePotalScreen
+import com.example.benson_project.nominee.ViewNomineeScreen
 import com.example.benson_project.nominee.ViewUploadsScreen
 import com.example.benson_project.ui.theme.Screens.Results.ResultPage
 import com.example.benson_project.ui.theme.Screens.aboutPage.AboutScreen
@@ -23,7 +21,7 @@ import com.example.benson_project.ui.theme.Screens.vote.VotePage
 
 
 @Composable
-fun AppNavHost(modifier: Modifier=Modifier, navController: NavHostController= rememberNavController(),startDestination: String= ROUTE_HOME) {
+fun AppNavHost(modifier: Modifier=Modifier, navController: NavHostController= rememberNavController(),startDestination: String= ROUTE_VIEW_NOMINEE) {
     NavHost(
         navController = navController,
         modifier = modifier,
@@ -44,15 +42,16 @@ fun AppNavHost(modifier: Modifier=Modifier, navController: NavHostController= re
         composable(ROUTE_ADD_NOMINEE) {
             AddNomineeScreen(navController)
         }
-        composable(ROUTE_VIEW_NOMINEE) {
-            ViewNomineePotalScreen(navController)
-        }
-        composable(ROUTE_UPDATE_NOMINEEPOTAL) {
-            UpdateNomineeScreen(navController)
-        }
-        composable(ROUTE_VIEW_UPLOAD){
-            ViewUploadsScreen(navController)
-        }
+
+    composable(ROUTE_UPDATE_NOMINEE + "/{id}") { passedData ->
+        UpdateNomineeScreen(navController, passedData.arguments?.getString("id")!!)
+    }
+    composable(ROUTE_VIEW_NOMINEE) {
+        ViewNomineeScreen(navController)
+    }
+    composable(ROUTE_VIEW_UPLOAD) {
+        ViewUploadsScreen(navController)
+    }
         composable(ROUTE_VOTE) {
                 VotePage(navController)
             }

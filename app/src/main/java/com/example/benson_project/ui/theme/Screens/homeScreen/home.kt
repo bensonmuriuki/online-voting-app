@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
@@ -63,7 +64,7 @@ fun HomeScreen(navController: NavController) {
 
     Box {
         Image(
-            painter = painterResource(id = R.drawable.v),
+            painter = painterResource(id = R.drawable.register),
             contentDescription = "home page",
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.matchParentSize().mandatorySystemGesturesPadding()
@@ -102,6 +103,19 @@ fun HomeScreen(navController: NavController) {
                     IconButton(onClick = {navController.navigate(ROUTE_HOME)
                         Toast.makeText(
                             context,
+                            "You have clicked  add button",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }) {
+                        Icon(
+                            imageVector = Icons.Filled.Add,
+                            contentDescription = "Hadd nominee",
+                            tint = Color.White
+                        )
+                    }
+                    IconButton(onClick = {navController.navigate(ROUTE_HOME)
+                        Toast.makeText(
+                            context,
                             "You have clicked  Home button",
                             Toast.LENGTH_SHORT
                         ).show()
@@ -115,7 +129,7 @@ fun HomeScreen(navController: NavController) {
                     IconButton(onClick = { navController.navigate(ROUTE_ABOUT)
                         Toast.makeText(
                             context,
-                            "You have clicked  a",
+                            "You have clicked  about",
                             Toast.LENGTH_SHORT
                         ).show()
                     }) {
@@ -145,22 +159,31 @@ fun HomeScreen(navController: NavController) {
                 text = "Welcome to Easy-VoteHub",
                 color = Color.Blue,
                 fontFamily = FontFamily.Cursive,
-                fontSize = 30.sp
+                fontSize = 30.sp,
+
             )
 
-            Button(
-                onClick = {
-                    navController.navigate(ROUTE_ADD_NOMINEE)
-                }, modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(text = "Add New Nominee")
+            Spacer(modifier = Modifier.height(100.dp))
 
-            }
+//            Button(
+//                onClick = {
+//                    navController.navigate(ROUTE_ADD_NOMINEE)
+//                }, modifier = Modifier
+//            ) {
+//                Text(text = "Add New Nominee")
+//
+//            }
+            Text(
+                text = "Click the button bellow to view the nomineted people ",
+                color = Color.Blue,
+                fontFamily = FontFamily.SansSerif,
+                fontSize = 20.sp
+            )
             Spacer(modifier = Modifier.height(100.dp))
 
             Button(onClick = {
                 navController.navigate(ROUTE_VIEW_NOMINEE)
-            }, modifier = Modifier.fillMaxWidth()) {
+            }, modifier = Modifier ) {
                 Text(text = "View Nominee List")
             }
 

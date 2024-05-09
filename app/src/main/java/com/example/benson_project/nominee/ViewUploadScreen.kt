@@ -14,33 +14,44 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
-
+import com.example.benson_project.R
 import com.example.benson_project.data.NomineeViewModel
-import com.example.benson_project.models.Nominee
 import com.example.benson_project.models.Upload
-import com.example.benson_project.navigation.ROUTE_UPDATE_NOMINEEPOTAL
+import com.example.benson_project.navigation.ROUTE_UPDATE_NOMINEE
+
 
 
 @Composable
 fun ViewUploadsScreen(navController:NavHostController) {
+    Box {
+        Image(
+            painter = painterResource(id = R.drawable.home2),
+            contentDescription = "home page",
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier.matchParentSize().mandatorySystemGesturesPadding()
+
+
+        )}
+
     Column(modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally) {
 
         var context = LocalContext.current
-        var NomineeRepository = NomineeViewModel(navController, context)
+        var nomineeRepository = NomineeViewModel(navController, context)
 
 
-        val emptyProductState = remember { mutableStateOf(Nominee("","","",)) }
-        val emptyProductsListState = remember { mutableStateListOf<Nominee>() }
+        val emptyUploadState = remember { mutableStateOf(Upload("","","","","")) }
+        var emptyUploadsListState = remember { mutableStateListOf<Upload>() }
 
-        val uploads = NomineeRepository.viewUploads(emptyProductState, emptyProductsListState)
-
+        var uploads = nomineeRepository.viewUploads(emptyUploadState, emptyUploadsListState)
 
 
         Column(
@@ -59,13 +70,12 @@ fun ViewUploadsScreen(navController:NavHostController) {
                 items(uploads){
                     UploadItem(
                         name = it.name,
-                        id = it.id,
+                        email = it.email,
                         post = it.post,
                         imageUrl = it.imageUrl,
+                        id = it.id,
                         navController = navController,
-                        NomineeRepository = NomineeRepository
-
-
+                        nomineeRepository = nomineeRepository
                     )
                 }
             }
@@ -75,25 +85,26 @@ fun ViewUploadsScreen(navController:NavHostController) {
 
 
 @Composable
-fun UploadItem(name:String, id:String, post:String, imageUrl:String,
-               navController:NavHostController, NomineeRepository:NomineeViewModel) {
+fun UploadItem(name:String, email:String, post:String, imageUrl:String, id:String,
+               navController:NavHostController, nomineeRepository: NomineeViewModel
+) {
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(text = name)
-        Text(text = id)
+        Text(text = email)
         Text(text = post)
         Image(
-            painter = rememberAsyncImagePainter (imageUrl),
+            painter = rememberAsyncImagePainter(imageUrl),
             contentDescription = null,
             modifier = Modifier.size(128.dp)
         )
         Button(onClick = {
-            NomineeRepository.deleteNominee(id)
+            nomineeRepository.deleteNominee(id)
         }) {
             Text(text = "Delete")
         }
         Button(onClick = {
-            navController.navigate(ROUTE_UPDATE_NOMINEEPOTAL+"/$id")
+            navController.navigate(ROUTE_UPDATE_NOMINEE+"/$id")
         }) {
             Text(text = "Update")
         }

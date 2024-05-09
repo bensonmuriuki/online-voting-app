@@ -1,7 +1,6 @@
 package com.example.benson_project.nominee
 
 
-import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -34,30 +33,32 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.benson_project.data.NomineeViewModel
 import com.example.benson_project.models.Nominee
+import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ValueEventListener
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UpdateNomineeScreen(navController: NavHostController) {
+fun UpdateNomineeScreen(navController: NavHostController, id: String) {
     Column(modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally) {
         var context = LocalContext.current
         var name by remember { mutableStateOf("") }
-        var id by remember { mutableStateOf("") }
+        var email by remember { mutableStateOf("") }
         var post by remember { mutableStateOf("") }
-
+        var votes by remember { mutableStateOf(0) }
         var currentDataRef = FirebaseDatabase.getInstance().getReference()
             .child("Nominee/$id")
         currentDataRef.addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 var nominee = snapshot.getValue(Nominee::class.java)
-                name = nominee!!.name
-                id = nominee!!.id
-                post = nominee!!.post
+                name = nominee?.name ?: ""
+                email = nominee?.email ?: ""
+                post = nominee?.post ?: ""
+                votes = nominee?.votes ?: 0 // Update votes here
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -66,7 +67,7 @@ fun UpdateNomineeScreen(navController: NavHostController) {
         })
 
         Text(
-            text = "Add nominee",
+            text = "Update Nominee",
             fontSize = 30.sp,
             fontFamily = FontFamily.Cursive,
             color = Color.Red,
@@ -75,13 +76,15 @@ fun UpdateNomineeScreen(navController: NavHostController) {
             textDecoration = TextDecoration.Underline
         )
 
-        var nomineeName by remember { mutableStateOf(TextFieldValue(name)) }
-        var nomineeid by remember { mutableStateOf(TextFieldValue(id)) }
-        var nomineepost by remember { mutableStateOf(TextFieldValue(post)) }
+        var nomeneeName by remember { mutableStateOf(TextFieldValue(name)) }
+        var nomineeEmail by remember { mutableStateOf(TextFieldValue(email)) }
+        var nomineePost by remember { mutableStateOf(TextFieldValue(post)) }
+        // Use TextFieldValue for votes instead of String
+        var nomineeVotes by remember { mutableStateOf(TextFieldValue(votes.toString())) }
 
         OutlinedTextField(
-            value = nomineeName,
-            onValueChange = { nomineeName = it },
+            value = nomeneeName,
+            onValueChange = { nomeneeName = it },
             label = { Text(text = "Nominee name *") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
@@ -89,39 +92,44 @@ fun UpdateNomineeScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(20.dp))
 
         OutlinedTextField(
-            value = nomineeid,
-            onValueChange = { nomineeid = it },
-            label = { Text(text = "nominee id *") },
+            value = nomineeEmail,
+            onValueChange = { nomineeEmail = it },
+            label = { Text(text = "nominee Email *") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
 
         Spacer(modifier = Modifier.height(20.dp))
 
         OutlinedTextField(
-            value = nomineepost,
-            onValueChange = { nomineepost = it },
-            label = { Text(text = "nominee Post *") },
+            value = nomineePost,
+            onValueChange = { nomineePost = it },
+            label = { Text(text = " nominee Post *") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
 
         Spacer(modifier = Modifier.height(20.dp))
 
+        // Extract updatedVotes calculation outside of the Button
+        val updatedVotes: Int = nomineeVotes.text.toIntOrNull() ?: 0
+
         Button(onClick = {
-            //-----------WRITE THE UPDATE LOGIC HERE---------------//
-            var nomineeRepository = NomineeViewModel(navController, context)
-            nomineeRepository.updateNominee(nomineeName.text.trim(),nomineeid.text.trim(),
-                nomineepost.text.trim())
-
-
+            var productRepository = NomineeViewModel(navController, context)
+            productRepository.updateNominee(
+                nomeneeName.text.trim(),
+                nomineeEmail.text.trim(),
+                nomineePost.text.trim(),
+                updatedVotes,  // Pass the updated vote count here
+                id = id // Pass the nominee ID
+            )
         }) {
             Text(text = "Update")
         }
-
     }
 }
+
 
 @Preview
 @Composable
 fun update() {
-    UpdateNomineeScreen(rememberNavController())
+    UpdateNomineeScreen(rememberNavController(), id = "")
 }

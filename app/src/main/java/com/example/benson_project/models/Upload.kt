@@ -2,20 +2,20 @@ package com.example.benson_project.models
 
 class Upload{
     var name:String=""
-    var id:String=""
+    var email:String=""
     var post:String=""
     var imageUrl:String=""
+    var id:String=""
 
-
-
-    constructor(name:String,id:String,post:String,imageUrl:String){
+    constructor(name:String,email:String,post:String,imageUrl:String,id:String){
 
         this.name=name
-        this.id=id
-        this.post=post
+        this.email=email
+        this.post = post
         this.imageUrl=imageUrl
-
+        this.id=id
 
     }
     constructor()
+
 }

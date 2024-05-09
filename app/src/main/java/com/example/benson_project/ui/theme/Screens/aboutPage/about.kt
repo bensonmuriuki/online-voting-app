@@ -1,22 +1,16 @@
 package com.example.benson_project.ui.theme.Screens.aboutPage
 
-import androidx.compose.animation.VectorConverter
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.mandatorySystemGesturesPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.benson_project.R
+import com.example.benson_project.navigation.ROUTE_HOME
 
 
 @Composable
@@ -60,7 +55,7 @@ import com.example.benson_project.R
                             "\n" +
                             "Website: [Your Company Website URL]\n" +
                             "\n" +
-                            "Contact: [bboybemn480@gmail.com]\n" +
+                            "Contact: [bboybemn480@gmail.com /call Us on  0728716511]\n" +
                             "\n" +
                             "**About Us:**\n" +
                             "\n" +
@@ -76,11 +71,11 @@ import com.example.benson_project.R
                             "\n" +
                            " Acknowledgments and Credits \n" +
 
-                           " I extend my sincere appreciation to the individuals and resources that contributed to the development of [Your Online Voting App Name]. While this project was largely a solo endeavor, it would not have been possible without the support and assistance of various entities. \n" +
+                           " I extend my sincere appreciation to the individuals and resources that contributed to the development of Easy-VoteHub. While this project was largely a solo endeavor, it would not have been possible without the support and assistance of various entities. \n" +
 
                             "Development: \n" +
 
-                       " [Your Name]: Developer and creator of [Your Online Voting App Name].\n" +
+                       " I BENSON MURIUKI : Developer and creator of Easy-VoteHub.\n" +
 
                     "Advisors and Mentors:\n" +
 
@@ -88,11 +83,11 @@ import com.example.benson_project.R
 
                 "Testers:\n" +
 
-               " A special thanks to those who volunteered their time to test and provide feedback on [Your Online Voting App Name].\n" +
+               " A special thanks to those who volunteered their time to test and provide feedback on Easy-VoteHub.\n" +
 
                 "Open Source Contributions:\n" +
 
-               " I acknowledge and appreciate the creators and maintainers of the open-source libraries and tools utilized in the development of [Your Online Voting App Name].\n" +
+               " I acknowledge and appreciate the creators and maintainers of the open-source libraries and tools utilized in the development of Easy-VoteHub.\n" +
 
                " Supportive Community:\n" +
 
@@ -104,7 +99,16 @@ import com.example.benson_project.R
 
                " Legal Compliance:\n" +
 
-               "Easy-VoteHub complies with all relevant laws and regulations governing online voting. For inquiries regarding legal matters, please contact [BBOYBEN480@gmail.com].\n")
+               "Easy-VoteHub complies with all relevant laws and regulations governing online voting. For inquiries regarding legal matters, please contact [BBOYBEN480@gmail.com / Call US on 0728716511].\n")
+            }
+
+            Button(
+                onClick = {
+                    navController.navigate(ROUTE_HOME)
+                }, modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "home button")
+
             }
 
         }
